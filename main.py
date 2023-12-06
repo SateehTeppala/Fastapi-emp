@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.openapi.utils import get_openapi
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse,StreamingResponse
 from functools import lru_cache
 import pandas as pd
 import json
@@ -59,9 +59,9 @@ async def sample_data(sample_size: int = Path(description="Number of samples to 
 
 @app.get('/v2/emp/{sample_size}')
 async def fake_data(sample_size: int = Path(description="Number of samples to retrieve", ge=1)):
-    jd = generate_random_data(sample_size)
-    jsd = json.dumps(jd)
-    return JSONResponse(json.loads(jsd))
+    # jd = generate_random_data(sample_size)
+    # jsd = json.dumps(jd)
+    return StreamingResponse(generate_random_data(sample_size),media_type="application/json")
 
 
 if __name__ == "__main__":

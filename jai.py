@@ -1,11 +1,11 @@
 from faker import Faker
 import random
 from functools import lru_cache
+import json
 
 @lru_cache(maxsize=None)
 def generate_random_data(num_records):
     fake = Faker()
-    random_data = []
 
     for _ in range(num_records):
         first_name = fake.first_name()
@@ -29,9 +29,8 @@ def generate_random_data(num_records):
             'Phone Number': phone
         }
 
-        random_data.append(record)
+        yield json.dumps(record).encode('utf-8')
 
-    return random_data
 
     # # Generate 5 random records
     # random_records = generate_random_data(100)
