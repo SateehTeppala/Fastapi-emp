@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "api": {
-      "runtime": "@vercel/python",
-      "maxDuration": 30
-    }
-  },
   "builds": [
     {
       "src": "main.py",
