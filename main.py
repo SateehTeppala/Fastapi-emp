@@ -45,7 +45,7 @@ def sample_data():
 
 
 @app.get('/v1/sample/{sample_size}')
-def sample_data(sample_size: int):
+def sample_data(sample_size: int = Path(description="Number of samples to retrieve", ge=1, le=1000)):
     jd = (df.sample(sample_size)).to_json(orient='records')
     return JSONResponse(json.loads(jd))
 
