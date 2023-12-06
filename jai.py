@@ -1,6 +1,8 @@
 from faker import Faker
 import random
+from functools import lru_cache
 
+@lru_cache(maxsize=None)
 def generate_random_data(num_records):
     fake = Faker()
     random_data = []

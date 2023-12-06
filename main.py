@@ -18,7 +18,7 @@ def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
     openapi_schema = get_openapi(
-        title="dummy emp details",  # Replace with your desired API title
+        title="RaData",  # Replace with your desired API title
         version="2.0",  # Set to an empty string to remove version
         description="IDGAF 🖕",  # Replace with your API description
         routes=app.routes,
