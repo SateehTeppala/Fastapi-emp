@@ -7,33 +7,41 @@ from fastapi.responses import HTMLResponse,StreamingResponse
 from functools import lru_cache
 import pandas as pd
 import json
-from jai import generate_random_data
+from jai import generate_random_data,v3_generate_random_data
 from fastapi_redis_cache import FastApiRedisCache, cache
 from sqlalchemy.orm import Session
 from contextlib import asynccontextmanager
 import os
+from db_connection import execute_query
+import ssl
 
 
-host_url= os.environ['HOST']
+# host_url= os.environ['HOST'] = 'redis://default:d47bae96b22b4102aa9a334ae21c95ce@included-grub-49313.upstash.io:49313'
+#'redis://default:12f835b1478244ef9c15c9c065b97833@maximum-whale-46225.kv.vercel-storage.com:46225'
 
 
+import ssl
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Startup logic
-    redis_cache = FastApiRedisCache()
-    redis_cache.init(
-        host_url= host_url,
-        prefix="myapi-cache",
-        response_header="X-MyAPI-Cache",
-        ignore_arg_types=[Request, Response, Session]
-    )
-    yield
-    # Shutdown logic
+app = FastAPI()
 
+# Startup logic
+# async def startup_event():
+#     redis_cache = FastApiRedisCache()
+#     redis_cache.init(
+#         host_url=host_url,
+#         prefix="myapi-cache",
+#         response_header="X-MyAPI-Cache",
+#         ignore_arg_types=[Request, Response],
+#     )
 
-app = FastAPI(lifespan=lifespan)
-app.add_middleware(GZipMiddleware, minimum_size=10)
+# Shutdown logic
+# async def shutdown_event():
+#     pass  # You can add shutdown logic here
+
+# Register startup and shutdown events
+# app.add_event_handler("startup", startup_event)
+# app.add_event_handler("shutdown", shutdown_event)
+app.add_middleware(GZipMiddleware, minimum_size=1)
 templates = Jinja2Templates(directory="templates")
 
 
@@ -75,17 +83,47 @@ async def sample_data():
 
 
 @app.get('/v1/sample/{sample_size}')
-async def sample_data(sample_size: int = Path(description="Number of samples to retrieve", ge=1, le=1000)):
+async def sample_data(sample_size: int = Path(description="Number of samples to retrieve", ge=1, le=10)):
     jd = (df.sample(sample_size)).to_json(orient='records')
-    return JSONResponse(json.loads(jd))
+    response = JSONResponse(json.loads(jd))
+    response.headers["Cache-Control"] = "max-age=300, must-revalidate"
 
+    return response
+
+@app.get('/v1/emp/{emp_id}')
+async def get_employee(emp_id: int = Path(description="Employee ID")):
+    # Find the employee data based on the provided id
+    employee_data = df[df['id'] == emp_id].to_dict(orient='records')
+    if not employee_data:
+        return JSONResponse(content={"error": "Employee not found"}, status_code=404)
+    response = JSONResponse(content=employee_data[0])
+    response.headers["Cache-Control"] = "max-age=300, must-revalidate"
+
+    return response
 
 @app.get('/v2/emp/{sample_size}')
-@cache(expire=30)
-async def fake_data(sample_size: int = Path(description="Number of samples to retrieve", ge=1)):
+# @cache(expire=30)
+async def fake_data(sample_size: int = Path(description="Number of samples to retrieve", ge=1,le=10)):
     # jd = generate_random_data(sample_size)
     # jsd = json.dumps(jd)
     return generate_random_data(sample_size)
+
+@app.get('/v2/emp/getdata/')
+# @cache(expire=30)
+async def fake_data():
+    # jd = generate_random_data(sample_size)
+    # jsd = json.dumps(jd)
+    return v3_generate_random_data()
+
+@app.get('/v3/emp/id/{emp_id}')
+# @cache(expire=60)
+async def emp_data(emp_id: str = Path(description="Enter emp id to retrieve")):
+    data = execute_query("select * from employee where employee_id = %s limit 1;",emp_id)
+    if data.empty:
+        return JSONResponse(content={"error": "Employee not found"}, status_code=404)
+    response = JSONResponse(content=json.loads(data.to_json(orient='records')))
+    response.headers["Cache-Control"] = "max-age=300, must-revalidate"
+    return response
 
 
 if __name__ == "__main__":

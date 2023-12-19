@@ -32,6 +32,27 @@ def generate_random_data(num_records):
         a.append(record)
     return a
 
+def v3_generate_random_data():
+    fake = Faker()
+    a = []
+    for _ in range(10000):
+        first_name = fake.first_name()
+        last_name = fake.last_name()
+        email = fake.email()
+        gender = random.choice(['Male', 'Female'])
+        salary = random.randint(10000, 999999)  # Adjust salary range as needed
+
+
+        record = {
+            'First Name': first_name,
+            'Last Name': last_name,
+            'Email': email,
+            'Gender': gender,
+            'Salary': salary
+        }
+
+        a.append(record)
+    return a
 
     # # Generate 5 random records
     # random_records = generate_random_data(100)
