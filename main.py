@@ -16,10 +16,6 @@ from db_connection import execute_query
 import ssl
 
 
-# host_url= os.environ['HOST'] = 'redis://default:d47bae96b22b4102aa9a334ae21c95ce@included-grub-49313.upstash.io:49313'
-#'redis://default:12f835b1478244ef9c15c9c065b97833@maximum-whale-46225.kv.vercel-storage.com:46225'
-
-
 import ssl
 
 app = FastAPI()
