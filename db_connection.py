@@ -2,26 +2,22 @@ import psycopg2
 from psycopg2 import pool
 import pandas as pd
 import logging
-
+import os
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Replace these variables with your actual database connection details
-_dbname = "verceldb"
-_user = "default"
-_password = "QaTSLp0O6jkF"
-_host = "ep-lingering-truth-24901261.ap-southeast-1.postgres.vercel-storage.com"
-_port = "5432"
+
 
 # Create a connection pool
 connection_pool = psycopg2.pool.SimpleConnectionPool(
     minconn=1,
     maxconn=5,
-    dbname=_dbname,
-    user=_user,
-    password=_password,
-    host=_host,
-    port=_port
+    dbname=os.environ['_dbname'],
+    user=os.environ['_user'],
+    password=os.environ['_password'],
+    host=os.environ['_host'],
+    port=os.environ['_port']
 )
 
 
