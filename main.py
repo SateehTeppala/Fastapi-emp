@@ -12,9 +12,8 @@ from fastapi_redis_cache import FastApiRedisCache, cache
 from sqlalchemy.orm import Session
 from contextlib import asynccontextmanager
 import os
-from db_connection import execute_query
 import ssl
-
+import random
 
 import ssl
 
@@ -111,15 +110,10 @@ async def fake_data():
     # jsd = json.dumps(jd)
     return v3_generate_random_data()
 
-@app.get('/v3/emp/id/{emp_id}')
-# @cache(expire=60)
-async def emp_data(emp_id: str = Path(description="Enter emp id to retrieve")):
-    data = execute_query("select * from employee where employee_id = %s limit 1;",emp_id)
-    if data.empty:
-        return JSONResponse(content={"error": "Employee not found"}, status_code=404)
-    response = JSONResponse(content=json.loads(data.to_json(orient='records')))
-    response.headers["Cache-Control"] = "max-age=300, must-revalidate"
-    return response
+@app.get('/random/data')
+async def random_data():
+    random_number = random.randint(1000, 10000)
+    return generate_random_data(random_number)
 
 
 if __name__ == "__main__":
