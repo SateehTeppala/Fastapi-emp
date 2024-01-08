@@ -65,7 +65,8 @@ df = get_cached_dataframe()
 
 @app.get("/", include_in_schema=False, response_class=HTMLResponse)
 async def index(request: Request):
-    return templates.TemplateResponse('index.html', {"request": request})
+    return "Hello,world"
+    # return templates.TemplateResponse('index.html', {"request": request})
 
 
 @app.get('/v1/sample')
