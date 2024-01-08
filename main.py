@@ -118,16 +118,6 @@ async def random_data():
     random_number = random.randint(1000, 10000)
     return generate_random_data(random_number)
 
-slack_app = App(
-    token='xoxb-6439898729460-6434525149381-iuMeJYOMHn8mpRcoAD3lDnA9',
-    signing_secret='0d2f2ba1c58e2f7b606a437e262b9971'
-)
-
-@app.post('/abc')
-def slack_msg():
-    return "Hello, World"
-
-handler = SlackRequestHandler(slack_app)
 if __name__ == "__main__":
     import uvicorn
 
