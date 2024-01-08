@@ -119,7 +119,7 @@ async def random_data():
     return generate_random_data(random_number)
 
 slack_app = App(
-    token='xoxb-6439898729460-6434525149381-K5mAqaqhMiuZBsBNrGhNsVEZ',
+    token='xoxb-6439898729460-6434525149381-iuMeJYOMHn8mpRcoAD3lDnA9',
     signing_secret='0d2f2ba1c58e2f7b606a437e262b9971'
 )
 
