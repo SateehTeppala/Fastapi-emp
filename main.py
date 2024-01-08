@@ -8,13 +8,8 @@ from functools import lru_cache
 import pandas as pd
 import json
 from jai import generate_random_data,v3_generate_random_data
-from fastapi_redis_cache import FastApiRedisCache, cache
-from sqlalchemy.orm import Session
-from contextlib import asynccontextmanager
-import os
-import ssl
+
 import random
-import requests
 
 
 import ssl
@@ -106,13 +101,10 @@ async def fake_data(sample_size: int = Path(description="Number of samples to re
     return generate_random_data(sample_size)
 
 @app.get('/v2/emp/getdata/')
-# @cache(expire=30)
 async def fake_data():
-    # jd = generate_random_data(sample_size)
-    # jsd = json.dumps(jd)
     return v3_generate_random_data()
 
-@app.get('/random/data')
+@app.get('/random/data/')
 async def random_data():
     random_number = random.randint(1000, 10000)
     return generate_random_data(random_number)
