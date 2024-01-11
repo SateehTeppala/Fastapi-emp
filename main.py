@@ -33,24 +33,24 @@ app = FastAPI()
 # Register startup and shutdown events
 # app.add_event_handler("startup", startup_event)
 # app.add_event_handler("shutdown", shutdown_event)
-app.add_middleware(GZipMiddleware, minimum_size=1)
-templates = Jinja2Templates(directory="templates")
+# app.add_middleware(GZipMiddleware, minimum_size=1)
+# templates = Jinja2Templates(directory="templates")
 
 
-def custom_openapi():
-    if app.openapi_schema:
-        return app.openapi_schema
-    openapi_schema = get_openapi(
-        title="RaData",  # Replace with your desired API title
-        version="2.0",  # Set to an empty string to remove version
-        description="IDGAF 🖕",  # Replace with your API description
-        routes=app.routes,
-    )
-    app.openapi_schema = openapi_schema
-    return app.openapi_schema
-
-
-app.openapi = custom_openapi
+# def custom_openapi():
+#     if app.openapi_schema:
+#         return app.openapi_schema
+#     openapi_schema = get_openapi(
+#         title="RaData",  # Replace with your desired API title
+#         version="2.0",  # Set to an empty string to remove version
+#         description="IDGAF 🖕",  # Replace with your API description
+#         routes=app.routes,
+#     )
+#     app.openapi_schema = openapi_schema
+#     return app.openapi_schema
+#
+#
+# app.openapi = custom_openapi
 
 
 @lru_cache(maxsize=None)
