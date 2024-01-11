@@ -15,6 +15,8 @@ import random
 import ssl
 
 app = FastAPI()
+# app.add_middleware(GZipMiddleware, minimum_size=1)
+
 
 # Startup logic
 # async def startup_event():
@@ -33,7 +35,7 @@ app = FastAPI()
 # Register startup and shutdown events
 # app.add_event_handler("startup", startup_event)
 # app.add_event_handler("shutdown", shutdown_event)
-app.add_middleware(GZipMiddleware, minimum_size=1)
+# app.add_middleware(GZipMiddleware, minimum_size=1)
 # templates = Jinja2Templates(directory="templates")
 
 
