@@ -108,7 +108,17 @@ async def fake_data():
 @app.get('/random/data/')
 async def random_data():
     random_number = random.randint(1000, 10000)
-    return generate_random_data(random_number)
+    data = generate_random_data(random_number)
+    data = generate_random_data(random_number)
+
+    # Return the data as JSON with appropriate headers
+    response = JSONResponse(content=data)
+
+    # Ensure that the Content-Disposition header is not set for attachment
+    if "Content-Disposition" in response.headers:
+        del response.headers["Content-Disposition"]
+
+    return response
 
 @app.get('/data')
 async def random_data():
