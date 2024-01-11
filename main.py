@@ -63,7 +63,7 @@ def get_cached_dataframe():
 df = get_cached_dataframe()
 
 
-@app.get("/", include_in_schema=False, response_class=HTMLResponse)
+@app.get("/")
 async def index(request: Request):
     return "Hello,world"
     # return templates.TemplateResponse('index.html', {"request": request})
