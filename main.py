@@ -110,6 +110,10 @@ async def random_data():
     random_number = random.randint(1000, 10000)
     return generate_random_data(random_number)
 
+@app.get('/data')
+async def random_data():
+    return generate_random_data(10000)
+
 if __name__ == "__main__":
     import uvicorn
 
