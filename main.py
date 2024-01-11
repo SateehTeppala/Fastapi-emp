@@ -64,15 +64,15 @@ df = get_cached_dataframe()
 
 
 @app.get("/")
-async def index(request: Request):
-    return "Hello,world"
+async def index():
+    return "Hello, world"
     # return templates.TemplateResponse('index.html', {"request": request})
 
 
 @app.get('/v1/sample')
 async def sample_data():
-    jd = (df.sample(1)).to_json(orient='records')
-    return JSONResponse(json.loads(jd))
+    jd = df.sample(1).to_dict(orient='records')[0]
+    return JSONResponse(content=jd)
 
 
 @app.get('/v1/sample/{sample_size}')
