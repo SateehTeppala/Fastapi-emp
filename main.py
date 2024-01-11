@@ -109,7 +109,6 @@ async def fake_data():
 async def random_data():
     random_number = random.randint(1000, 10000)
     data = generate_random_data(random_number)
-    data = generate_random_data(random_number)
 
     # Return the data as JSON with appropriate headers
     response = JSONResponse(content=data)
