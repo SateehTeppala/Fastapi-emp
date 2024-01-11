@@ -114,8 +114,8 @@ async def random_data():
     response = JSONResponse(content=data)
 
     # Ensure that the Content-Disposition header is not set for attachment
-    if "Content-Disposition" in response.headers:
-        del response.headers["Content-Disposition"]
+    response.headers["Content-Type"] = "application/json"
+    response.headers["Content-Disposition"] = "inline"
 
     return response
 
